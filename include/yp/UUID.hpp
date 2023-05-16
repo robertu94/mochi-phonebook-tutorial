@@ -3,14 +3,14 @@
  *
  * See COPYRIGHT in top-level directory.
  */
-#ifndef __ALPHA_UUID_UTIL_HPP
-#define __ALPHA_UUID_UTIL_HPP
+#ifndef __YP_UUID_UTIL_HPP
+#define __YP_UUID_UTIL_HPP
 
 #include <uuid/uuid.h>
 #include <string>
 #include <cstring>
 
-namespace alpha {
+namespace yp {
 
 /**
  * @brief UUID class (Universally Unique IDentifier).
@@ -150,12 +150,12 @@ namespace std {
 
 
     /**
-     * @brief Specialization of std::hash for alpha::UUID
+     * @brief Specialization of std::hash for yp::UUID
      */
     template<>
-    struct hash<alpha::UUID>
+    struct hash<yp::UUID>
     {
-        size_t operator()(const alpha::UUID& id) const
+        size_t operator()(const yp::UUID& id) const
         {
             return id.hash();
         }

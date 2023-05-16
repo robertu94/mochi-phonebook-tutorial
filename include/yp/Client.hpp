@@ -3,26 +3,26 @@
  *
  * See COPYRIGHT in top-level directory.
  */
-#ifndef __ALPHA_CLIENT_HPP
-#define __ALPHA_CLIENT_HPP
+#ifndef __YP_CLIENT_HPP
+#define __YP_CLIENT_HPP
 
-#include <alpha/ResourceHandle.hpp>
-#include <alpha/UUID.hpp>
+#include <yp/PhonebookHandle.hpp>
+#include <yp/UUID.hpp>
 #include <thallium.hpp>
 #include <memory>
 
-namespace alpha {
+namespace yp {
 
 class ClientImpl;
-class ResourceHandle;
+class PhonebookHandle;
 
 /**
  * @brief The Client object is the main object used to establish
- * a connection with a Alpha service.
+ * a connection with a Yp service.
  */
 class Client {
 
-    friend class ResourceHandle;
+    friend class PhonebookHandle;
 
     public:
 
@@ -76,20 +76,20 @@ class Client {
     const thallium::engine& engine() const;
 
     /**
-     * @brief Creates a handle to a remote resource and returns.
+     * @brief Creates a handle to a remote phonebook and returns.
      * You may set "check" to false if you know for sure that the
-     * corresponding resource exists, which will avoid one RPC.
+     * corresponding phonebook exists, which will avoid one RPC.
      *
      * @param address Address of the provider holding the database.
      * @param provider_id Provider id.
-     * @param resource_id Resource UUID.
-     * @param check Checks if the Resource exists by issuing an RPC.
+     * @param phonebook_id Phonebook UUID.
+     * @param check Checks if the Phonebook exists by issuing an RPC.
      *
-     * @return a ResourceHandle instance.
+     * @return a PhonebookHandle instance.
      */
-    ResourceHandle makeResourceHandle(const std::string& address,
+    PhonebookHandle makePhonebookHandle(const std::string& address,
                                       uint16_t provider_id,
-                                      const UUID& resource_id,
+                                      const UUID& phonebook_id,
                                       bool check = true) const;
 
     /**

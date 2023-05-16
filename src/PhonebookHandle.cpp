@@ -3,68 +3,68 @@
  * 
  * See COPYRIGHT in top-level directory.
  */
-#include "alpha/ResourceHandle.hpp"
-#include "alpha/RequestResult.hpp"
-#include "alpha/Exception.hpp"
+#include "yp/PhonebookHandle.hpp"
+#include "yp/RequestResult.hpp"
+#include "yp/Exception.hpp"
 
 #include "AsyncRequestImpl.hpp"
 #include "ClientImpl.hpp"
-#include "ResourceHandleImpl.hpp"
+#include "PhonebookHandleImpl.hpp"
 
 #include <thallium/serialization/stl/string.hpp>
 #include <thallium/serialization/stl/pair.hpp>
 
-namespace alpha {
+namespace yp {
 
-ResourceHandle::ResourceHandle() = default;
+PhonebookHandle::PhonebookHandle() = default;
 
-ResourceHandle::ResourceHandle(const std::shared_ptr<ResourceHandleImpl>& impl)
+PhonebookHandle::PhonebookHandle(const std::shared_ptr<PhonebookHandleImpl>& impl)
 : self(impl) {}
 
-ResourceHandle::ResourceHandle(const ResourceHandle&) = default;
+PhonebookHandle::PhonebookHandle(const PhonebookHandle&) = default;
 
-ResourceHandle::ResourceHandle(ResourceHandle&&) = default;
+PhonebookHandle::PhonebookHandle(PhonebookHandle&&) = default;
 
-ResourceHandle& ResourceHandle::operator=(const ResourceHandle&) = default;
+PhonebookHandle& PhonebookHandle::operator=(const PhonebookHandle&) = default;
 
-ResourceHandle& ResourceHandle::operator=(ResourceHandle&&) = default;
+PhonebookHandle& PhonebookHandle::operator=(PhonebookHandle&&) = default;
 
-ResourceHandle::~ResourceHandle() = default;
+PhonebookHandle::~PhonebookHandle() = default;
 
-ResourceHandle::operator bool() const {
+PhonebookHandle::operator bool() const {
     return static_cast<bool>(self);
 }
 
-Client ResourceHandle::client() const {
+Client PhonebookHandle::client() const {
     return Client(self->m_client);
 }
 
-void ResourceHandle::sayHello() const {
-    if(not self) throw Exception("Invalid alpha::ResourceHandle object");
+void PhonebookHandle::sayHello() const {
+    if(not self) throw Exception("Invalid yp::PhonebookHandle object");
     auto& rpc = self->m_client->m_say_hello;
     auto& ph  = self->m_ph;
-    auto& resource_id = self->m_resource_id;
-    rpc.on(ph)(resource_id);
+    auto& phonebook_id = self->m_phonebook_id;
+    rpc.on(ph)(phonebook_id);
 }
 
-void ResourceHandle::computeSum(
+void PhonebookHandle::computeSum(
         int32_t x, int32_t y,
         int32_t* result,
         AsyncRequest* req) const
 {
-    if(not self) throw Exception("Invalid alpha::ResourceHandle object");
+    if(not self) throw Exception("Invalid yp::PhonebookHandle object");
     auto& rpc = self->m_client->m_compute_sum;
     auto& ph  = self->m_ph;
-    auto& resource_id = self->m_resource_id;
+    auto& phonebook_id = self->m_phonebook_id;
     if(req == nullptr) { // synchronous call
-        RequestResult<int32_t> response = rpc.on(ph)(resource_id, x, y);
+        RequestResult<int32_t> response = rpc.on(ph)(phonebook_id, x, y);
         if(response.success()) {
             if(result) *result = response.value();
         } else {
             throw Exception(response.error());
         }
     } else { // asynchronous call
-        auto async_response = rpc.on(ph).async(resource_id, x, y);
+        auto async_response = rpc.on(ph).async(phonebook_id, x, y);
         auto async_request_impl =
             std::make_shared<AsyncRequestImpl>(std::move(async_response));
         async_request_impl->m_wait_callback =

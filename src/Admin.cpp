@@ -3,9 +3,9 @@
  * 
  * See COPYRIGHT in top-level directory.
  */
-#include "alpha/Admin.hpp"
-#include "alpha/Exception.hpp"
-#include "alpha/RequestResult.hpp"
+#include "yp/Admin.hpp"
+#include "yp/Exception.hpp"
+#include "yp/RequestResult.hpp"
 
 #include "AdminImpl.hpp"
 
@@ -13,7 +13,7 @@
 
 namespace tl = thallium;
 
-namespace alpha {
+namespace yp {
 
 Admin::Admin() = default;
 
@@ -38,53 +38,53 @@ Admin::operator bool() const {
     return static_cast<bool>(self);
 }
 
-UUID Admin::createResource(const std::string& address,
+UUID Admin::createPhonebook(const std::string& address,
                            uint16_t provider_id,
-                           const std::string& resource_type,
-                           const std::string& resource_config,
+                           const std::string& phonebook_type,
+                           const std::string& phonebook_config,
                            const std::string& token) const {
     auto endpoint  = self->m_engine.lookup(address);
     auto ph        = tl::provider_handle(endpoint, provider_id);
-    RequestResult<UUID> result = self->m_create_resource.on(ph)(token, resource_type, resource_config);
+    RequestResult<UUID> result = self->m_create_phonebook.on(ph)(token, phonebook_type, phonebook_config);
     if(not result.success()) {
         throw Exception(result.error());
     }
     return result.value();
 }
 
-UUID Admin::openResource(const std::string& address,
+UUID Admin::openPhonebook(const std::string& address,
                          uint16_t provider_id,
-                         const std::string& resource_type,
-                         const std::string& resource_config,
+                         const std::string& phonebook_type,
+                         const std::string& phonebook_config,
                          const std::string& token) const {
     auto endpoint  = self->m_engine.lookup(address);
     auto ph        = tl::provider_handle(endpoint, provider_id);
-    RequestResult<UUID> result = self->m_open_resource.on(ph)(token, resource_type, resource_config);
+    RequestResult<UUID> result = self->m_open_phonebook.on(ph)(token, phonebook_type, phonebook_config);
     if(not result.success()) {
         throw Exception(result.error());
     }
     return result.value();
 }
 
-void Admin::closeResource(const std::string& address,
+void Admin::closePhonebook(const std::string& address,
                            uint16_t provider_id,
-                           const UUID& resource_id,
+                           const UUID& phonebook_id,
                            const std::string& token) const {
     auto endpoint  = self->m_engine.lookup(address);
     auto ph        = tl::provider_handle(endpoint, provider_id);
-    RequestResult<bool> result = self->m_close_resource.on(ph)(token, resource_id);
+    RequestResult<bool> result = self->m_close_phonebook.on(ph)(token, phonebook_id);
     if(not result.success()) {
         throw Exception(result.error());
     }
 }
 
-void Admin::destroyResource(const std::string& address,
+void Admin::destroyPhonebook(const std::string& address,
                             uint16_t provider_id,
-                            const UUID& resource_id,
+                            const UUID& phonebook_id,
                             const std::string& token) const {
     auto endpoint  = self->m_engine.lookup(address);
     auto ph        = tl::provider_handle(endpoint, provider_id);
-    RequestResult<bool> result = self->m_destroy_resource.on(ph)(token, resource_id);
+    RequestResult<bool> result = self->m_destroy_phonebook.on(ph)(token, phonebook_id);
     if(not result.success()) {
         throw Exception(result.error());
     }

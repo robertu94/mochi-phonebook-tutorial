@@ -6,14 +6,14 @@
 #ifndef __DUMMY_BACKEND_HPP
 #define __DUMMY_BACKEND_HPP
 
-#include <alpha/Backend.hpp>
+#include <yp/Backend.hpp>
 
 using json = nlohmann::json;
 
 /**
- * Dummy implementation of an alpha Backend.
+ * Dummy implementation of an yp Backend.
  */
-class DummyResource : public alpha::Backend {
+class DummyPhonebook : public yp::Backend {
 
     thallium::engine m_engine;
     json             m_config;
@@ -23,35 +23,35 @@ class DummyResource : public alpha::Backend {
     /**
      * @brief Constructor.
      */
-    DummyResource(thallium::engine engine, const json& config);
+    DummyPhonebook(thallium::engine engine, const json& config);
 
     /**
      * @brief Move-constructor.
      */
-    DummyResource(DummyResource&&) = default;
+    DummyPhonebook(DummyPhonebook&&) = default;
 
     /**
      * @brief Copy-constructor.
      */
-    DummyResource(const DummyResource&) = default;
+    DummyPhonebook(const DummyPhonebook&) = default;
 
     /**
      * @brief Move-assignment operator.
      */
-    DummyResource& operator=(DummyResource&&) = default;
+    DummyPhonebook& operator=(DummyPhonebook&&) = default;
 
     /**
      * @brief Copy-assignment operator.
      */
-    DummyResource& operator=(const DummyResource&) = default;
+    DummyPhonebook& operator=(const DummyPhonebook&) = default;
 
     /**
      * @brief Destructor.
      */
-    virtual ~DummyResource() = default;
+    virtual ~DummyPhonebook() = default;
 
     /**
-     * @brief Get the resource's configuration as a JSON-formatted string.
+     * @brief Get the phonebook's configuration as a JSON-formatted string.
      */
     std::string getConfig() const override;
 
@@ -68,37 +68,37 @@ class DummyResource : public alpha::Backend {
      *
      * @return a RequestResult containing the result.
      */
-    alpha::RequestResult<int32_t> computeSum(int32_t x, int32_t y) override;
+    yp::RequestResult<int32_t> computeSum(int32_t x, int32_t y) override;
 
     /**
-     * @brief Destroys the underlying resource.
+     * @brief Destroys the underlying phonebook.
      *
      * @return a RequestResult<bool> instance indicating
      * whether the database was successfully destroyed.
      */
-    alpha::RequestResult<bool> destroy() override;
+    yp::RequestResult<bool> destroy() override;
 
     /**
-     * @brief Static factory function used by the ResourceFactory to
-     * create a DummyResource.
+     * @brief Static factory function used by the PhonebookFactory to
+     * create a DummyPhonebook.
      *
      * @param engine Thallium engine
-     * @param config JSON configuration for the resource
+     * @param config JSON configuration for the phonebook
      *
-     * @return a unique_ptr to a resource
+     * @return a unique_ptr to a phonebook
      */
-    static std::unique_ptr<alpha::Backend> create(const thallium::engine& engine, const json& config);
+    static std::unique_ptr<yp::Backend> create(const thallium::engine& engine, const json& config);
 
     /**
-     * @brief Static factory function used by the ResourceFactory to
-     * open a DummyResource.
+     * @brief Static factory function used by the PhonebookFactory to
+     * open a DummyPhonebook.
      *
      * @param engine Thallium engine
-     * @param config JSON configuration for the resource
+     * @param config JSON configuration for the phonebook
      *
-     * @return a unique_ptr to a resource
+     * @return a unique_ptr to a phonebook
      */
-    static std::unique_ptr<alpha::Backend> open(const thallium::engine& engine, const json& config);
+    static std::unique_ptr<yp::Backend> open(const thallium::engine& engine, const json& config);
 };
 
 #endif

@@ -3,82 +3,82 @@
  *
  * See COPYRIGHT in top-level directory.
  */
-#ifndef __ALPHA_RESOURCE_HANDLE_HPP
-#define __ALPHA_RESOURCE_HANDLE_HPP
+#ifndef __YP_PHONEBOOK_HANDLE_HPP
+#define __YP_PHONEBOOK_HANDLE_HPP
 
 #include <thallium.hpp>
 #include <memory>
 #include <unordered_set>
 #include <nlohmann/json.hpp>
-#include <alpha/Client.hpp>
-#include <alpha/Exception.hpp>
-#include <alpha/AsyncRequest.hpp>
+#include <yp/Client.hpp>
+#include <yp/Exception.hpp>
+#include <yp/AsyncRequest.hpp>
 
-namespace alpha {
+namespace yp {
 
 namespace tl = thallium;
 
 class Client;
-class ResourceHandleImpl;
+class PhonebookHandleImpl;
 
 /**
- * @brief A ResourceHandle object is a handle for a remote resource
- * on a server. It enables invoking the resource's functionalities.
+ * @brief A PhonebookHandle object is a handle for a remote phonebook
+ * on a server. It enables invoking the phonebook's functionalities.
  */
-class ResourceHandle {
+class PhonebookHandle {
 
     friend class Client;
 
     public:
 
     /**
-     * @brief Constructor. The resulting ResourceHandle handle will be invalid.
+     * @brief Constructor. The resulting PhonebookHandle handle will be invalid.
      */
-    ResourceHandle();
+    PhonebookHandle();
 
     /**
      * @brief Copy-constructor.
      */
-    ResourceHandle(const ResourceHandle&);
+    PhonebookHandle(const PhonebookHandle&);
 
     /**
      * @brief Move-constructor.
      */
-    ResourceHandle(ResourceHandle&&);
+    PhonebookHandle(PhonebookHandle&&);
 
     /**
      * @brief Copy-assignment operator.
      */
-    ResourceHandle& operator=(const ResourceHandle&);
+    PhonebookHandle& operator=(const PhonebookHandle&);
 
     /**
      * @brief Move-assignment operator.
      */
-    ResourceHandle& operator=(ResourceHandle&&);
+    PhonebookHandle& operator=(PhonebookHandle&&);
 
     /**
      * @brief Destructor.
      */
-    ~ResourceHandle();
+    ~PhonebookHandle();
 
     /**
-     * @brief Returns the client this resource has been opened with.
+     * @brief Returns the client this phonebook has been opened with.
      */
     Client client() const;
 
 
     /**
-     * @brief Checks if the ResourceHandle instance is valid.
+     * @brief Checks if the PhonebookHandle instance is valid.
      */
     operator bool() const;
 
     /**
-     * @brief Sends an RPC to the resource to make it print a hello message.
+     * @brief Sends an RPC to the phonebook to make it print a hello message.
      */
     void sayHello() const;
 
     /**
-     * @brief Requests the target resource to compute the sum of two numbers.
+     * @brief Requests the target phonebook to compute the sum of two numbers.
      * If result is null, it will be ignored. If req is not null, this call
      * will be non-blocking and the caller is responsible for waiting on
      * the request.
@@ -96,13 +96,13 @@ class ResourceHandle {
 
     /**
      * @brief Constructor is private. Use a Client object
-     * to create a ResourceHandle instance.
+     * to create a PhonebookHandle instance.
      *
      * @param impl Pointer to implementation.
      */
-    ResourceHandle(const std::shared_ptr<ResourceHandleImpl>& impl);
+    PhonebookHandle(const std::shared_ptr<PhonebookHandleImpl>& impl);
 
-    std::shared_ptr<ResourceHandleImpl> self;
+    std::shared_ptr<PhonebookHandleImpl> self;
 };
 
 }

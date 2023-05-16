@@ -6,41 +6,41 @@
 #include "DummyBackend.hpp"
 #include <iostream>
 
-ALPHA_REGISTER_BACKEND(dummy, DummyResource);
+YP_REGISTER_BACKEND(dummy, DummyPhonebook);
 
-DummyResource::DummyResource(thallium::engine engine, const json& config)
+DummyPhonebook::DummyPhonebook(thallium::engine engine, const json& config)
 : m_engine(std::move(engine)),
   m_config(config) {
 
 }
 
-void DummyResource::sayHello() {
+void DummyPhonebook::sayHello() {
     std::cout << "Hello World" << std::endl;
 }
 
-std::string DummyResource::getConfig() const {
+std::string DummyPhonebook::getConfig() const {
     return m_config.dump();
 }
 
-alpha::RequestResult<int32_t> DummyResource::computeSum(int32_t x, int32_t y) {
-    alpha::RequestResult<int32_t> result;
+yp::RequestResult<int32_t> DummyPhonebook::computeSum(int32_t x, int32_t y) {
+    yp::RequestResult<int32_t> result;
     result.value() = x + y;
     return result;
 }
 
-alpha::RequestResult<bool> DummyResource::destroy() {
-    alpha::RequestResult<bool> result;
+yp::RequestResult<bool> DummyPhonebook::destroy() {
+    yp::RequestResult<bool> result;
     result.value() = true;
     // or result.success() = true
     return result;
 }
 
-std::unique_ptr<alpha::Backend> DummyResource::create(const thallium::engine& engine, const json& config) {
+std::unique_ptr<yp::Backend> DummyPhonebook::create(const thallium::engine& engine, const json& config) {
     (void)engine;
-    return std::unique_ptr<alpha::Backend>(new DummyResource(engine, config));
+    return std::unique_ptr<yp::Backend>(new DummyPhonebook(engine, config));
 }
 
-std::unique_ptr<alpha::Backend> DummyResource::open(const thallium::engine& engine, const json& config) {
+std::unique_ptr<yp::Backend> DummyPhonebook::open(const thallium::engine& engine, const json& config) {
     (void)engine;
-    return std::unique_ptr<alpha::Backend>(new DummyResource(engine, config));
+    return std::unique_ptr<yp::Backend>(new DummyPhonebook(engine, config));
 }

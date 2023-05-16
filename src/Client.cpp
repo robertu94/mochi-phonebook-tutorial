@@ -3,19 +3,19 @@
  *
  * See COPYRIGHT in top-level directory.
  */
-#include "alpha/Exception.hpp"
-#include "alpha/Client.hpp"
-#include "alpha/ResourceHandle.hpp"
-#include "alpha/RequestResult.hpp"
+#include "yp/Exception.hpp"
+#include "yp/Client.hpp"
+#include "yp/PhonebookHandle.hpp"
+#include "yp/RequestResult.hpp"
 
 #include "ClientImpl.hpp"
-#include "ResourceHandleImpl.hpp"
+#include "PhonebookHandleImpl.hpp"
 
 #include <thallium/serialization/stl/string.hpp>
 
 namespace tl = thallium;
 
-namespace alpha {
+namespace yp {
 
 Client::Client() = default;
 
@@ -47,24 +47,24 @@ Client::operator bool() const {
     return static_cast<bool>(self);
 }
 
-ResourceHandle Client::makeResourceHandle(
+PhonebookHandle Client::makePhonebookHandle(
         const std::string& address,
         uint16_t provider_id,
-        const UUID& resource_id,
+        const UUID& phonebook_id,
         bool check) const {
     auto endpoint  = self->m_engine.lookup(address);
     auto ph        = tl::provider_handle(endpoint, provider_id);
     RequestResult<bool> result;
     result.success() = true;
     if(check) {
-        result = self->m_check_resource.on(ph)(resource_id);
+        result = self->m_check_phonebook.on(ph)(phonebook_id);
     }
     if(result.success()) {
-        auto resource_impl = std::make_shared<ResourceHandleImpl>(self, std::move(ph), resource_id);
-        return ResourceHandle(resource_impl);
+        auto phonebook_impl = std::make_shared<PhonebookHandleImpl>(self, std::move(ph), phonebook_id);
+        return PhonebookHandle(phonebook_impl);
     } else {
         throw Exception(result.error());
-        return ResourceHandle(nullptr);
+        return PhonebookHandle(nullptr);
     }
 }
 
