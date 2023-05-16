@@ -13,13 +13,13 @@ namespace tl = thallium;
 
 namespace yp {
 
-Provider::Provider(const tl::engine& engine, uint16_t provider_id, const std::string& config, const tl::pool& p)
-: self(std::make_shared<ProviderImpl>(engine, provider_id, config, p)) {
+Provider::Provider(const tl::engine& engine, const tl::provider_handle& yokan_ph, uint16_t provider_id, const std::string& config, const tl::pool& p)
+: self(std::make_shared<ProviderImpl>(engine, yokan_ph, provider_id, config, p)) {
     self->get_engine().push_finalize_callback(this, [p=this]() { p->self.reset(); });
 }
 
-Provider::Provider(margo_instance_id mid, uint16_t provider_id, const std::string& config, const tl::pool& p)
-: self(std::make_shared<ProviderImpl>(mid, provider_id, config, p)) {
+Provider::Provider(margo_instance_id mid, const tl::provider_handle& yokan_ph, uint16_t provider_id, const std::string& config, const tl::pool& p)
+: self(std::make_shared<ProviderImpl>(mid, yokan_ph, provider_id, config, p)) {
     self->get_engine().push_finalize_callback(this, [p=this]() { p->self.reset(); });
 }
 

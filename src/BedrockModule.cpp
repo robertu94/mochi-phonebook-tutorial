@@ -7,6 +7,7 @@
 #include "yp/Provider.hpp"
 #include "yp/ProviderHandle.hpp"
 #include <bedrock/AbstractServiceFactory.hpp>
+#include <yokan/provider-handle.h>
 
 namespace tl = thallium;
 
@@ -17,8 +18,14 @@ class YpFactory : public bedrock::AbstractServiceFactory {
     YpFactory() {}
 
     void *registerProvider(const bedrock::FactoryArgs &args) override {
+        auto it = args.dependencies.find("yokan_ph");
+        yk_provider_handle_t yokan_ph =
+          it->second.dependencies[0]->getHandle<yk_provider_handle_t>();
+        tl::provider_handle ph {
+            args.engine, yokan_ph->addr, yokan_ph->provider_id, false
+        };
         auto provider = new yp::Provider(args.mid, args.provider_id,
-                args.config, tl::pool(args.pool));
+                args.config, tl::pool(args.pool), ph);
         return static_cast<void *>(provider);
     }
 
@@ -62,8 +69,10 @@ class YpFactory : public bedrock::AbstractServiceFactory {
     }
 
     const std::vector<bedrock::Dependency> &getProviderDependencies() override {
-        static const std::vector<bedrock::Dependency> no_dependency;
-        return no_dependency;
+        static const std::vector<bedrock::Dependency> dependency {
+            {"yokan_ph", "yokan", BEDROCK_REQUIRED}
+        };
+        return dependency;
     }
 
     const std::vector<bedrock::Dependency> &getClientDependencies() override {

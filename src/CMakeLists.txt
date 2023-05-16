@@ -29,7 +29,7 @@ set (yp-vers "${YP_VERSION_MAJOR}.${YP_VERSION_MINOR}")
 # server library
 add_library (yp-server ${server-src-files} ${dummy-src-files})
 target_link_libraries (yp-server
-    PUBLIC thallium PkgConfig::uuid nlohmann_json::nlohmann_json
+    PUBLIC thallium PkgConfig::uuid nlohmann_json::nlohmann_json yokan-client
     PRIVATE spdlog::spdlog coverage_config)
 target_include_directories (yp-server PUBLIC $<INSTALL_INTERFACE:include>)
 target_include_directories (yp-server BEFORE PUBLIC

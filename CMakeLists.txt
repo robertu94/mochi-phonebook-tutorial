@@ -4,6 +4,7 @@ cmake_minimum_required (VERSION 3.8)
 project (yp C CXX)
 set (CMAKE_CXX_STANDARD 14)
 enable_testing ()
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_definitions (-Wextra -Wall -Wpedantic)
 
@@ -48,6 +49,7 @@ endif ()
 find_package (PkgConfig REQUIRED)
 # search fo thallium
 find_package (thallium REQUIRED)
+find_package (yokan REQUIRED)
 # search for uuid
 pkg_check_modules (uuid REQUIRED IMPORTED_TARGET uuid)
 # search for nlohmann/json

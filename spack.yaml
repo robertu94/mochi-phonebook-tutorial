@@ -8,6 +8,7 @@ spack:
   - spdlog
   - tclap
   - mochi-bedrock ~ssg ~abtio
+  - mochi-yokan+bedrock
   concretizer:
     unify: true
     reuse: true

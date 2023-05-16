@@ -17,6 +17,7 @@ class DummyPhonebook : public yp::Backend {
 
     thallium::engine m_engine;
     json             m_config;
+    std::unordered_map<std::string, uint64_t> numbers;
 
     public:
 
@@ -99,6 +100,29 @@ class DummyPhonebook : public yp::Backend {
      * @return a unique_ptr to a phonebook
      */
     static std::unique_ptr<yp::Backend> open(const thallium::engine& engine, const json& config);
+
+
+    /**
+     * @brief insert a phone number
+     *
+     * @param name 
+     * @param phone
+     *
+     * @return a RequestResult containing the result.
+     */
+    yp::RequestResult<uint32_t> insert(std::string const& name, uint64_t phone) override;
+
+
+    /**
+     * @brief insert a phone number
+     *
+     * @param name 
+     * @param phone
+     *
+     * @return a RequestResult containing the result.
+     */
+    yp::RequestResult<uint64_t> lookup(std::string const& name) override;
+
 };
 
 #endif

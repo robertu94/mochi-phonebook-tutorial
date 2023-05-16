@@ -32,6 +32,7 @@ class Provider {
      * @param pool Argobots pool to use to handle RPCs.
      */
     Provider(const tl::engine& engine,
+             const tl::provider_handle& yokan_ph,
              uint16_t provider_id = 0,
              const std::string& config = "",
              const tl::pool& pool = tl::pool());
@@ -45,9 +46,11 @@ class Provider {
      * @param pool Argobots pool to use to handle RPCs.
      */
     Provider(margo_instance_id mid,
+             const tl::provider_handle& yokan_ph,
              uint16_t provider_id = 0,
              const std::string& config = "",
-             const tl::pool& pool = tl::pool());
+             const tl::pool& pool = tl::pool()
+             );
 
     /**
      * @brief Copy-constructor is deleted.

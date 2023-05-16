@@ -1,8 +1,22 @@
 {
     "libraries": {
-        "yp": "libyp-bedrock-module.so"
+        "yp": "libyp-bedrock-module.so",
+        "yokan": "libyokan-bedrock-module.so"
     },
     "providers": [
+        {
+            "type": "yokan",
+            "name": "my-yokan-provider",
+            "provider_id": 123,
+            "config": {
+                "databases": [
+                    {
+                        "type": "map",
+                        "name": "my-db"
+                    }
+                ]
+            }
+        },
         {
             "type": "yp",
             "name": "my-yp-provider",
@@ -14,6 +28,9 @@
                         "config": {}
                     }
                 ]
+            },
+            "dependencies": {
+                "yokan_ph": "yokan:123@local"
             }
         }
     ]

@@ -92,6 +92,10 @@ class PhonebookHandle {
                     int32_t* result = nullptr,
                     AsyncRequest* req = nullptr) const;
 
+    void insert(std::string const& name, uint64_t const phone, uint32_t* result = nullptr, AsyncRequest* req = nullptr);
+
+    void lookup(std::string const& name, uint64_t* result = nullptr, AsyncRequest* req = nullptr);
+
     private:
 
     /**

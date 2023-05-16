@@ -23,12 +23,16 @@ class ClientImpl {
     tl::remote_procedure m_check_phonebook;
     tl::remote_procedure m_say_hello;
     tl::remote_procedure m_compute_sum;
+    tl::remote_procedure m_lookup;
+    tl::remote_procedure m_insert;
 
     ClientImpl(const tl::engine& engine)
     : m_engine(engine)
     , m_check_phonebook(m_engine.define("yp_check_phonebook"))
     , m_say_hello(m_engine.define("yp_say_hello").disable_response())
     , m_compute_sum(m_engine.define("yp_compute_sum"))
+    , m_lookup(m_engine.define("yp_lookup"))
+    , m_insert(m_engine.define("yp_insert"))
     {}
 
     ClientImpl(margo_instance_id mid)

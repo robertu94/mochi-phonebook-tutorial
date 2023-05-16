@@ -44,3 +44,19 @@ std::unique_ptr<yp::Backend> DummyPhonebook::open(const thallium::engine& engine
     (void)engine;
     return std::unique_ptr<yp::Backend>(new DummyPhonebook(engine, config));
 }
+
+
+yp::RequestResult<uint32_t> DummyPhonebook::insert(std::string const& name, uint64_t phone) {
+    numbers.emplace(name, phone);
+    yp::RequestResult<uint32_t> result;
+    result.value() = 0;
+    return result;
+}
+
+yp::RequestResult<uint64_t> DummyPhonebook::lookup(std::string const& name) {
+    
+    yp::RequestResult<uint64_t> result;
+    result.value() = numbers[name];
+    return result;
+}
+

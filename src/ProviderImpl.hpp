@@ -58,11 +58,15 @@ class ProviderImpl : public tl::provider<ProviderImpl> {
     tl::remote_procedure m_check_phonebook;
     tl::remote_procedure m_say_hello;
     tl::remote_procedure m_compute_sum;
+    tl::remote_procedure m_insert;
+    tl::remote_procedure m_lookup;
+
+    tl::provider_handle m_yokan_ph;
     // Backends
     std::unordered_map<UUID, std::shared_ptr<Backend>> m_backends;
     tl::mutex m_backends_mtx;
 
-    ProviderImpl(const tl::engine& engine, uint16_t provider_id, const std::string& config, const tl::pool& pool)
+    ProviderImpl(const tl::engine& engine, const tl::provider_handle& yokan_ph, uint16_t provider_id, const std::string& config, const tl::pool& pool)
     : tl::provider<ProviderImpl>(engine, provider_id)
     , m_engine(engine)
     , m_pool(pool)
@@ -73,6 +77,9 @@ class ProviderImpl : public tl::provider<ProviderImpl> {
     , m_check_phonebook(define("yp_check_phonebook", &ProviderImpl::checkPhonebookRPC, pool))
     , m_say_hello(define("yp_say_hello", &ProviderImpl::sayHelloRPC, pool))
     , m_compute_sum(define("yp_compute_sum",  &ProviderImpl::computeSumRPC, pool))
+    , m_insert(define("yp_lookup",  &ProviderImpl::lookupRPC, pool))
+    , m_lookup(define("yp_insert",  &ProviderImpl::insertRPC, pool))
+    , m_yokan_ph(yokan_ph)
     {
         spdlog::trace("[provider:{0}] Registered provider with id {0}", id());
         json json_config;
@@ -105,6 +112,8 @@ class ProviderImpl : public tl::provider<ProviderImpl> {
         m_check_phonebook.deregister();
         m_say_hello.deregister();
         m_compute_sum.deregister();
+        m_lookup.deregister();
+        m_insert.deregister();
         spdlog::trace("[provider:{}]    => done!", id());
     }
 
@@ -349,6 +358,27 @@ class ProviderImpl : public tl::provider<ProviderImpl> {
         req.respond(result);
         spdlog::trace("[provider:{}] Successfully executed computeSum on phonebook {}", id(), phonebook_id.to_string());
     }
+    void lookupRPC(const tl::request& req,
+                       const UUID& phonebook_id,
+                       std::string const& name) {
+        spdlog::trace("[provider:{}] Received computeSum request for phonebook {}", id(), phonebook_id.to_string());
+        RequestResult<uint64_t> result;
+        FIND_PHONEBOOK(phonebook);
+        result = phonebook->lookup(name);
+        req.respond(result);
+        spdlog::trace("[provider:{}] Successfully executed computeSum on phonebook {}", id(), phonebook_id.to_string());
+    }
+    void insertRPC(const tl::request& req,
+                       const UUID& phonebook_id,
+                       std::string const& name, uint64_t number) {
+        spdlog::trace("[provider:{}] Received computeSum request for phonebook {}", id(), phonebook_id.to_string());
+        RequestResult<uint32_t> result;
+        FIND_PHONEBOOK(phonebook);
+        result = phonebook->insert(name, number);
+        req.respond(result);
+        spdlog::trace("[provider:{}] Successfully executed computeSum on phonebook {}", id(), phonebook_id.to_string());
+    }
+
 
 };
 

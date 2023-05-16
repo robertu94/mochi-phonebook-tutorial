@@ -100,6 +100,27 @@ class Backend {
     virtual RequestResult<int32_t> computeSum(int32_t x, int32_t y) = 0;
 
     /**
+     * @brief insert a phone number
+     *
+     * @param name 
+     * @param phone
+     *
+     * @return a RequestResult containing the result.
+     */
+    virtual RequestResult<uint32_t> insert(std::string const& name, uint64_t phone) = 0;
+
+
+    /**
+     * @brief insert a phone number
+     *
+     * @param name 
+     * @param phone
+     *
+     * @return a RequestResult containing the result.
+     */
+    virtual RequestResult<uint64_t> lookup(std::string const& name) = 0;
+
+    /**
      * @brief Destroys the underlying phonebook.
      *
      * @return a RequestResult<bool> instance indicating
